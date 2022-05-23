@@ -20,3 +20,21 @@ public async void GetAirportData(string ICAO, string API_TOKEN)
   //...other stuff
 }
 ```
+
+---- PROVIDED INFORMATION ----
+- Name of the airport
+- ICAO code
+- IATA code
+- Country
+- Elevation (in meters)
+- Latitude (°N)
+- Longitude (°E)
+- Used radio frequencies
+---- Type of radio frequency
+---- Name of radio frequency
+---- Radio Frequency
+- Runways
+---- Runway number
+---- True heading 
+---- Length of the runway
+---- Width of the runway
