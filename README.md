@@ -2,6 +2,10 @@
 
 This C# Library allows users to get information on the desidered airport by using OpenAIP provided APIs.
 
+---- REQUISITES ----
+
+Requires Newtonsoft.Json.dll to parse JSON information, get it from NuGet into Visual Studio.
+
 ---- HOW TO USE ----
 - Add the provided DLL file as Reference into your C# project.
 - Add `using OpenAipLib;` at the top of your Project code-behind file.
