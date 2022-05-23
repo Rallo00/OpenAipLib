@@ -2,3 +2,21 @@
 
 This C# Library allows users to get information on the desidered airport by using OpenAIP provided APIs.
 
+---- HOW TO USE ----
+- Add the provided DLL file as Reference into your C# project.
+- Add `using OpenAipLib;` at the top of your Project code-behind file.
+- Create a free token here → https://www.openaip.net/users/clients (need to register)
+
+Call the APIs by doing so:
+```cs
+OpenAipLib.Airport airport = OpenAipLib.GetAirportInfo(airportICAOcode, API_TOKEN);
+```
+
+To avoid thread blocking I recommend to use async methods like so:
+```cs
+public async void GetAirportData(string ICAO, string API_TOKEN)
+{
+  OpenAipLib.Airport airport = await OpenAipLib.GetAirportInfo(airportICAOcode, API_TOKEN);
+  //...other stuff
+}
+```
