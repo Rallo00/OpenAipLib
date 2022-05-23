@@ -9,7 +9,7 @@ Requires Newtonsoft.Json.dll to parse JSON information, get it from NuGet into V
 ---- HOW TO USE ----
 - Add the provided DLL file as Reference into your C# project.
 - Add `using OpenAipLib;` at the top of your Project code-behind file.
-- Create a free token here → https://www.openaip.net/users/clients (need to register)
+- Create a free API token here → https://www.openaip.net/users/clients (need to register)
 
 Call the APIs by doing so:
 ```cs
