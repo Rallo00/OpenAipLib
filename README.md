@@ -4,7 +4,8 @@ This C# Library allows users to get information on the desidered airport by usin
 
 ---- REQUISITES ----
 
-Requires Newtonsoft.Json.dll to parse JSON information, get it from NuGet into Visual Studio.
+- Requires Newtonsoft.Json.dll to parse JSON information, get it from NuGet into Visual Studio.
+- .Net Framework SDK v4.5.1
 
 ---- HOW TO USE ----
 - Add the provided DLL file as Reference into your C# project.
