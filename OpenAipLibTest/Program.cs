@@ -25,8 +25,8 @@ namespace OpenAipLibTest
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"City: {airport.Name}");
             Console.WriteLine($"Country: {airport.Country}");
-            Console.WriteLine($"ICAO: {airport.Icao}");
-            Console.WriteLine($"IATA: {airport.Iata}");
+            Console.WriteLine($"ICAO: {airport.ICAOCode}");
+            Console.WriteLine($"IATA: {airport.IATACode}");
             Console.WriteLine($"Coordinates: {airport.Latitude}°N, {airport.Longitude}°E");
             Console.WriteLine($"Elevation: {airport.Elevation} m");
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -38,7 +38,8 @@ namespace OpenAipLibTest
             Console.WriteLine($"Runway:");
             Console.ForegroundColor = ConsoleColor.White;
             foreach (OpenAipLib.Runway r in airport.Runways)
-                Console.WriteLine($"{r.Number}\t{r.TrueHeading}\t{r.Length} m\t{r.Width} m");
+                Console.WriteLine($"{r.Identification1}\\{r.Identification2}\t{r.Bearing1}°\\{r.Bearing2}°\t{r.Length} m\t{r.Width} m\t{r.Surface}");
+            Console.WriteLine("*************************************************************");
         }
     }
 }

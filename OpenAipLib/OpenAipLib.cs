@@ -23,8 +23,9 @@ public static class OpenAipLib
 
         Airport convertedAirport = new Airport();
         convertedAirport.Name = airport.Name;
-        convertedAirport.Icao = airport.Icao;
-        convertedAirport.Iata = airport.Iata;
+        convertedAirport.City = "";
+        convertedAirport.ICAOCode = airport.Icao;
+        convertedAirport.IATACode = airport.Iata;
         convertedAirport.Country = airport.Country;
         convertedAirport.Elevation = airport.Elevation.Value;
         convertedAirport.Frequencies = airport.Frequencies;
@@ -32,11 +33,41 @@ public static class OpenAipLib
         List<Runway> runways = new List<Runway>();
         for(int i = 0; i < airport.Runways.Count; i+=2)
         {
-            string rwy = $"{airport.Runways[i].RunwayNumber}\\{airport.Runways[i + 1].RunwayNumber}";
-            string trh = $"{airport.Runways[i].TrueHeading}\\{airport.Runways[i+1].TrueHeading}";
-            runways.Add(new Runway(rwy, trh, airport.Runways[i].Dimensions.RwyLength.Value, airport.Runways[i].Dimensions.RwyWidth.Value));
+            string id1 = $"{airport.Runways[i].RunwayNumber}";
+            string id2 = $"{ airport.Runways[i + 1].RunwayNumber}";
+            string b1 = $"{airport.Runways[i].TrueHeading}";
+            string b2 = $"{airport.Runways[i + 1].TrueHeading}";
+            runways.Add(new Runway(id1, id2, b1, b2, airport.Runways[i].Dimensions.RwyLength.Value, airport.Runways[i].Dimensions.RwyWidth.Value, airport.Runways[i].Surface.MainComposite));
         }
         convertedAirport.Runways = runways;
+        //Fix Surface
+        foreach (Runway r in convertedAirport.Runways)
+            switch(r.Surface)
+            {
+                case "0": r.Surface = "Asphalt"; break;
+                case "1": r.Surface = "Concrete"; break;
+                case "2": r.Surface = "Grass"; break;
+                case "3": r.Surface = "Sand"; break;
+                case "4": r.Surface = "Water"; break;
+                case "5": r.Surface = "Tarmac"; break;
+                case "6": r.Surface = "Brick"; break;
+                case "7": r.Surface = "Macadam or tarmac"; break;
+                case "8": r.Surface = "Stone"; break;
+                case "9": r.Surface = "Coral"; break;
+                case "10": r.Surface= "Clay"; break;
+                case "11": r.Surface= "Laterite"; break;
+                case "12": r.Surface= "Gravel"; break;
+                case "13": r.Surface= "Earth"; break;
+                case "14": r.Surface= "Ice"; break;
+                case "15": r.Surface= "Snow"; break;
+                case "16": r.Surface= "Protective laminate (Rubber)"; break;
+                case "17": r.Surface= "Metal"; break;
+                case "18": r.Surface= "Landing mat portable system (Aluminium)"; break;
+                case "19": r.Surface= "Pierced steel planking"; break;
+                case "20": r.Surface= "Wood"; break;
+                case "21": r.Surface= "Non Bituminous mix"; break;
+                case "22": r.Surface= "Unknown"; break;
+            }
         //Fix Frequencies
         foreach(Frequency f in airport.Frequencies)
             switch (f.Type)
@@ -65,6 +96,7 @@ public static class OpenAipLib
                 case "21": f.Type = "VOLMET"; break;
                 default: f.Type = "Not available"; break;
             }
+
         //Fix Coordinates
         convertedAirport.Latitude = airport.Geometry.Coordinates[0];
         convertedAirport.Longitude = airport.Geometry.Coordinates[1];
@@ -84,8 +116,9 @@ public static class OpenAipLib
     public class Airport
     {
         public string Name;
-        public string Icao;
-        public string Iata;
+        public string City;
+        public string ICAOCode;
+        public string IATACode;
         public string Country;
         public double Elevation;
         public string Latitude;
@@ -119,16 +152,22 @@ public static class OpenAipLib
     }
     public class Runway
     {
-        public string Number;
-        public string TrueHeading;
+        public string Identification1;
+        public string Identification2;
+        public string Bearing1;
+        public string Bearing2;
         public string Length;           //OpenAIP gives back always METERS
         public string Width;            //
-        public Runway(string n, string th, string l, string w)
+        public string Surface;
+        public Runway(string id1, string id2, string b1, string b2, string l, string w, string s)
         {
-            Number = (n != null) ? n : "Not available"; 
-            TrueHeading = (th != null) ? th : "Not available"; 
+            Identification1 = (id1 != null) ? id1 : "Not available";
+            Identification2 = (id2 != null) ? id2 : "Not available";
+            Bearing1 = (b1 != null) ? b1 : "Not available";
+            Bearing2 = (b2 != null) ? b2 : "Not available";
             Length = (l != null) ? l : "Not available"; 
             Width = (w != null) ? w : "Not available";
+            Surface = (s != null) ? s : "Not available";
         }
     }
 
@@ -177,6 +216,9 @@ public static class OpenAipLib
         protected internal string TrueHeading;
         [Newtonsoft.Json.JsonProperty("dimension")]
         protected internal JsonRwyDimensions Dimensions;
+        [Newtonsoft.Json.JsonProperty("surface")]
+        protected internal JsonRwySurface Surface;
+
 
         [JsonConstructor]
         private JsonRunway(string r, string th, JsonRwyDimensions rd) { RunwayNumber = r; TrueHeading = th; Dimensions = rd; }
@@ -187,6 +229,11 @@ public static class OpenAipLib
         protected internal JsonRwyLength RwyLength;
         [Newtonsoft.Json.JsonProperty("width")]
         protected internal JsonRwyWidth RwyWidth;
+    }
+    protected internal class JsonRwySurface
+    {
+        [Newtonsoft.Json.JsonProperty("mainComposite")]
+        protected internal string MainComposite;
     }
     protected internal class JsonRwyLength
     {
