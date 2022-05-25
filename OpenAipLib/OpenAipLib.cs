@@ -5,12 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-
-//URL DI ESEMPIO: 
-//https://api.core.openaip.net/api/airports?fields=_id%2Cname%2CicaoCode%2CiataCode%2Ccountry%2Cgeometry%2Celevation%2Cfrequencies%2Crunways%2Ccontact%2Cremarks&sortDesc=true&approved=true&searchOptLwc=true&search=lipr&apiKey=1eba052dd328ac3b9894d0c3d62678a6
-//DOC:
-//https://docs.openaip.net/#/Airports/get_airports
-
 public static class OpenAipLib
 {
     public static async Task<Airport> GetAirportInfo(string icao, string API_TOKEN)
@@ -31,13 +25,16 @@ public static class OpenAipLib
         convertedAirport.Frequencies = airport.Frequencies;
         //Fix Runway
         List<Runway> runways = new List<Runway>();
-        for(int i = 0; i < airport.Runways.Count; i+=2)
+        if (airport.Runways != null)
         {
-            string id1 = $"{airport.Runways[i].RunwayNumber}";
-            string id2 = $"{ airport.Runways[i + 1].RunwayNumber}";
-            string b1 = $"{airport.Runways[i].TrueHeading}";
-            string b2 = $"{airport.Runways[i + 1].TrueHeading}";
-            runways.Add(new Runway(id1, id2, b1, b2, airport.Runways[i].Dimensions.RwyLength.Value, airport.Runways[i].Dimensions.RwyWidth.Value, airport.Runways[i].Surface.MainComposite));
+            for (int i = 0; i < airport.Runways.Count; i += 2)
+            {
+                string id1 = $"{airport.Runways[i].RunwayNumber}";
+                string id2 = $"{ airport.Runways[i + 1].RunwayNumber}";
+                string b1 = $"{airport.Runways[i].TrueHeading}";
+                string b2 = $"{airport.Runways[i + 1].TrueHeading}";
+                runways.Add(new Runway(id1, id2, b1, b2, airport.Runways[i].Dimensions.RwyLength.Value, airport.Runways[i].Dimensions.RwyWidth.Value, airport.Runways[i].Surface.MainComposite));
+            }
         }
         convertedAirport.Runways = runways;
         //Fix Surface
