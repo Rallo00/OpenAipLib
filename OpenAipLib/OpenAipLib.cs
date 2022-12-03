@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 public static class OpenAipLib
 {
-    public static async Task<Airport> GetAirportInfo(string icao, string API_TOKEN)
+    public static async Task<Airport> GetAirportInfoAsync(string icao, string API_TOKEN)
     {
         string URI = $"https://api.core.openaip.net/api/airports?page=1&limit=1&fields=_id%2Cname%2CicaoCode%2CiataCode%2Ccountry%2Cgeometry%2Celevation%2Cfrequencies%2Crunways%2Ccontact%2Cremarks&sortDesc=true&approved=true&searchOptLwc=true&search={icao.ToUpper()}&apiKey={API_TOKEN}";
         string response = await Http_GetRequest(URI);
@@ -99,6 +99,10 @@ public static class OpenAipLib
         convertedAirport.Longitude = airport.Geometry.Coordinates[1];
 
         return convertedAirport;
+    }
+    public static Airport GetAirportInfo(string icao, string API_TOKEN)
+    {
+        return GetAirportInfoAsync(icao, API_TOKEN).Result;
     }
     private static async Task<string> Http_GetRequest(string URI)
     {

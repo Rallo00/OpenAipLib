@@ -19,7 +19,7 @@ namespace OpenAipLibTest
         }
         static async void GetAirportData(string icao)
         {
-            OpenAipLib.Airport airport = await OpenAipLib.GetAirportInfo(icao, API_TOKEN);
+            OpenAipLib.Airport airport = await OpenAipLib.GetAirportInfoAsync(icao, API_TOKEN);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(">> AIRPORT RESULT");
             Console.ForegroundColor = ConsoleColor.White;
